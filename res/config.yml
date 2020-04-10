@@ -1,0 +1,46 @@
+var: 2
+debug: false
+
+#玩家列表头文字
+PlayerListHeader: '§8§m   -=§8§r§8{§l|§f§lWhiteG§b§l白鲸物语§8§l|§r§8}§m=-   '
+
+#在玩家F3调试界面插入文字
+F3info: '§3[§b§lWhite§7§lG§f白鲸物语§3]'
+
+#玩家加入提示
+PlayerJoinMessage: '§r%player%§b突然出现'
+#玩家退出提示
+PlayerQuitMessage: '§r%player%§3又消失啦'
+
+#Tab列表刷新间隔(单位:毫秒
+TAB_TIMER_INTERVAL: 2000
+
+#覆盖玩家Tab列表
+PlayerTabList: true
+
+#启用昵称
+NickName: true
+
+#替换原聊天信息为可用鼠标点击的交互式字体
+RepaceChat: true
+
+#保存聊天记录，当玩家加入时发送给玩家。(最大:100)
+ChatRecord: 50
+
+#前后缀最大长度（玩家更改前后缀时会和玩家自己ID等加起来最长允许的数值）
+MaxNameLength: 21
+#设置服务器MOTD
+#变量名%version%将会被替换成服务器版本
+MOTD:
+  Enable: true
+  Motd: |
+    §0-         §8§m  -=§8§r§8{§l|§f§lWhiteG白鲸§8§l|§r§8}§m=-  §r               §2Ver§a§l%version%
+    §0-    §8-=§b高版本§m§3*§r§b公益§m§3*§r§b生存§m§3*§r§b娱乐§m§3*§r§b休闲§m§3*§r§b养老§8=-        §e=§6§b相遇是缘§e=
+#禁言指令黑名单
+MuteCommands:
+  - 'say'
+  - 'show'
+  - 'portabletool'
+  - 'me'
+  - 'mi'
+  - 'moeinfo'

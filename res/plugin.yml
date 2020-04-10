@@ -1,0 +1,28 @@
+name: MoeInfo
+main: cn.whiteg.moeInfo.MoeInfo
+version: 1.1
+author: MoeWhite
+api-version: 1.15
+depend: [ MMOCore ]
+softdepend: [ Vault, MarriageMaster, MoeTP, Multiverse-Core, MemFree, MoeEco, Residence, PlaceholderAPI, MoePacketAPI ]
+commands:
+  moeinfo:
+    description: MyPlug
+    aliases: [ mi, moi ]
+  prefix:
+    description: prefix
+    aliases: [ pf ]
+
+  suffix:
+    description: Suffix
+    aliases: [ sf ]
+
+  namecolour:
+    description: NameColour
+    aliases: [ nc ]
+
+  whois:
+    description: Whois Command
+
+  mute:
+    description: Mute Command
