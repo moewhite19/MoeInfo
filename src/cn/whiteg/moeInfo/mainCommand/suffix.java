@@ -26,12 +26,12 @@ public class suffix extends CommandInterface {
             String v1 = args[1];
             Player p = (Player) sender;
             DataCon dc = MMOCore.getPlayerData(p);
-            if (v1.length() + sender.getName().length() + PlayerDisplayNameManage.getNameColour(dc).length() + PlayerDisplayNameManage.getPrefix(dc).length() > MoeInfo.settin.MAX_NAME_LENGTH){
-                sender.sendMessage("长度不符合");
+            if (v1.contains("&k") || v1.contains("&K")){
+                sender.sendMessage("包含违规字符");
                 return true;
             }
-            if (v1.toLowerCase().contains("&k")){
-                sender.sendMessage("包含违规字符");
+            if (v1.length() + sender.getName().length() + PlayerDisplayNameManage.getNameColour(dc).length() + PlayerDisplayNameManage.getPrefix(dc).length() > MoeInfo.settin.MAX_NAME_LENGTH){
+                sender.sendMessage("长度不符合");
                 return true;
             }
             Player player = (Player) sender;
@@ -67,25 +67,19 @@ public class suffix extends CommandInterface {
         if (args.length == 2){
             if (sender instanceof Player){
                 String v1 = args[1];
-                if (v1.length() + sender.getName().length() > 20){
-                    return Collections.singletonList("长度不符合");
-                } else if (v1.toLowerCase().contains("&k")){
+                DataCon dc = MMOCore.getPlayerData(((Player) sender));
+                if (v1.contains("&k") || v1.contains("&K")){
                     return Collections.singletonList("包含违规字符");
-                } else {
-                    String nn = PlayerDisplayNameManage.getSuffix((Player) sender);
-                    if (nn == null) return null;
-                    nn = nn.replace('§','&');
-                    return Collections.singletonList(nn);
                 }
+                if (v1.length() + sender.getName().length() + PlayerDisplayNameManage.getNameColour(dc).length() + PlayerDisplayNameManage.getPrefix(dc).length() > MoeInfo.settin.MAX_NAME_LENGTH){
+                    return Collections.singletonList("长度不符合");
+                }
+                String nn = PlayerDisplayNameManage.getSuffix((Player) sender);
+                if (nn == null) return null;
+                nn = nn.replace('§','&');
+                return Collections.singletonList(nn);
             }
         }
-//        if (args.length == 3){
-//            Player player = Bukkit.getPlayerExact(args[2]);
-//            if (player == null) return null;
-//            String nn = PlayerDisplayNameManage.getPrefix(player);
-//            if (nn != null) nn = nn.replace("§","&");
-//            return Collections.singletonList(nn);
-//        }
-        return PlayersList(args);
+        return null;
     }
 }

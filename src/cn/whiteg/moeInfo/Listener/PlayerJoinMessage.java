@@ -21,9 +21,4 @@ public class PlayerJoinMessage implements Listener {
         event.setQuitMessage(ChatColor.translateAlternateColorCodes('&',MoeInfo.settin.PLAYER_QUIT_MESSAGE.replace("%player%",event.getPlayer().getDisplayName())));
 //        if (MoeInfo.plugin.tabPlayerlistsTimer != null) MoeInfo.plugin.tabPlayerlistsTimer.getLocMap().remove(event.getPlayer().getName());
     }
-
-    public void unreg() {
-        PlayerJoinEvent.getHandlerList().unregister(this);
-        PlayerQuitEvent.getHandlerList().unregister(this);
-    }
 }

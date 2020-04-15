@@ -11,10 +11,4 @@ public class NickNameListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         PlayerDisplayNameManage.upView(event.getPlayer());
     }
-
-    public void unreg() {
-        PlayerJoinEvent.getHandlerList().unregister(this);
-    }
-
-
 }

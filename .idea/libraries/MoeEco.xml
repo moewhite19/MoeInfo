@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="MoeEco">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../MoeEco/MoeEco.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

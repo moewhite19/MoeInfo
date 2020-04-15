@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="MoeChurch">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../MoeChurch" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../MoeChurch/src" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../MoeChurch" recursive="false" />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="MemFree">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../MemFree/MemFree.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

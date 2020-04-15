@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="MarriageMaster">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../MarriageMaster/MarriageMaster.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
