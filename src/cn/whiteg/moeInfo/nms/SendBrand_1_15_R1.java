@@ -6,7 +6,7 @@ import net.minecraft.server.v1_15_R1.PacketPlayOutCustomPayload;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-public class SendBrand_1_14_R1 implements SendBrand.SendBrandHander {
+public class SendBrand_1_15_R1 implements SendBrand.SendBrandHander {
     @Override
     public void send(Player player,String brand) {
         //brand = PAPIHook.getPAPIString(player, brand);
