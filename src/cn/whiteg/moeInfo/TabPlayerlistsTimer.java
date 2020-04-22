@@ -86,6 +86,7 @@ public class TabPlayerlistsTimer extends Thread {
                     continue;
                 }
                 int sleptime = settin.TAB_TIMER_INTERVAL / players.size();
+                if (sleptime <= 0) sleptime = 1;
                 StringBuilder sb = new StringBuilder().append(settin.LISTHEAD);
                 if (plugin.memfree)
                     sb.append("\n§7T:§f").append(String.format("%.2f",MemFree.plugin.timer.tps)).append(" §7- §f").append(players.size()).append("/").append(Bukkit.getServer().getMaxPlayers()).append("§7 -").append(" §7M:§f").append(String.format("%.2f",(MemFree.plugin.timer.use / (double) MemFree.plugin.timer.max) * 100)).append("%");
