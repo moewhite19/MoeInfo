@@ -80,23 +80,22 @@ public class TabPlayerlistsTimer extends Thread {
     public void run() {
         while (run) {
             try{
-                Collection players = Bukkit.getOnlinePlayers();
+                Collection<? extends Player> players = Bukkit.getOnlinePlayers();
                 if (players.isEmpty()){
                     sleep(settin.TAB_TIMER_INTERVAL);
                     continue;
                 }
                 int sleptime = settin.TAB_TIMER_INTERVAL / players.size();
-                if (sleptime < 2) sleptime = 10;
-                StringBuilder head = new StringBuilder().append(settin.LISTHEAD);
+                StringBuilder sb = new StringBuilder().append(settin.LISTHEAD);
                 if (plugin.memfree)
-                    head.append("\n§7T:§f").append(String.format("%.2f",MemFree.plugin.timer.tps)).append(" §7- §f").append(players.size()).append("/").append(Bukkit.getServer().getMaxPlayers()).append("§7 -").append(" §7M:§f").append(String.format("%.2f",(MemFree.plugin.timer.use / (double) MemFree.plugin.timer.max) * 100)).append("%");
+                    sb.append("\n§7T:§f").append(String.format("%.2f",MemFree.plugin.timer.tps)).append(" §7- §f").append(players.size()).append("/").append(Bukkit.getServer().getMaxPlayers()).append("§7 -").append(" §7M:§f").append(String.format("%.2f",(MemFree.plugin.timer.use / (double) MemFree.plugin.timer.max) * 100)).append("%");
                 else
-                    head.append("\n§7- §f").append(players.size()).append("/").append(Bukkit.getServer().getMaxPlayers()).append("§7 -");
+                    sb.append("\n§7- §f").append(players.size()).append("/").append(Bukkit.getServer().getMaxPlayers()).append("§7 -");
                 byte maxcont = (byte) (players.size() > 20 ? 3 : 2);
-                final String hd = head.toString();
-                final Iterator iterator = players.iterator();
+                final String hd = sb.toString();
+                final Iterator<? extends Player> iterator = players.iterator();
                 while (iterator.hasNext()) {
-                    Player p = (Player) iterator.next();
+                    Player p = iterator.next();
                     if (!p.isOnline()) continue;
                     List<String> infos = new ArrayList<>();
                     final DataCon dc = MMOCore.getPlayerData(p);
@@ -125,7 +124,7 @@ public class TabPlayerlistsTimer extends Thread {
                         }
                     }
 
-                    final StringBuilder sb = new StringBuilder();
+                    sb = new StringBuilder();
                     for (short i = 0; i < infos.size(); i++) {
                         if (i % maxcont == 0) sb.append("\n");
                         sb.append(infos.get(i));
@@ -143,7 +142,7 @@ public class TabPlayerlistsTimer extends Thread {
     }
 
     public void remove() {
-        stop();
         run = false;
+        stop();
     }
 }

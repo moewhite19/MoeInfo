@@ -57,7 +57,7 @@ public class PlayerDisplayNameManage {
     public static void setNameColour(DataCon dc,String namecore) {
         if (namecore == null || namecore.isEmpty()) namecore = "";
         namecore = ChatColor.translateAlternateColorCodes('&',namecore.replace("&k",""));
-        dc.setString("Player.namecolour",isEmpty(namecore) ? null : namecore);
+        dc.setString("Player.namecolour",namecore.isEmpty() ? null : namecore);
     }
 
     public static boolean isEmpty(String str) {

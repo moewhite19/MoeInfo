@@ -52,8 +52,7 @@ public class namecolour extends CommandInterface {
             }
             player.setDisplayName(v1);
             PlayerDisplayNameManage.setNameColour(player,v1);
-            PlayerDisplayNameManage.upView(player);
-            sender.sendMessage("§b成功将" + args[1] + "的名字颜色设置为为§r " + player.getDisplayName());
+            sender.sendMessage("§b成功将" + args[1] + "的名字颜色设置为为§r " + PlayerDisplayNameManage.upView(player));
             return true;
         }
         sender.sendMessage("/namecolour <颜色代码> 来设置名字颜色");
