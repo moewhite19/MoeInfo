@@ -92,7 +92,7 @@ public class PlayerChatListener implements Listener {
         if (mute != 0){
             long now = System.currentTimeMillis();
             if (mute > now){
-                String cmd = event.getMessage().substring(1);
+                String cmd = event.getMessage().substring(1).toLowerCase();
                 for (String muteCommand : MoeInfo.settin.MuteCommands) {
                     if (cmd.startsWith(muteCommand)){
                         event.setCancelled(true);

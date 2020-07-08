@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 public class ActionBar {
     private final static AcitonBarHander hander;
     static {
-        hander = new ActionBar_1_15_R1();
+        hander = new ActionBar_1_16_R1();
     }
     public static void sendActionBar(Player player , String msg){
         hander.send(player , msg);

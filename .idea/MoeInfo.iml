@@ -25,11 +25,10 @@
     <orderEntry type="library" name="MoeTP" level="project" />
     <orderEntry type="library" name="MMOCore" level="project" />
     <orderEntry type="library" name="MoeChurch" level="project" />
-    <orderEntry type="library" name="MoeQbot" level="project" />
-    <orderEntry type="library" name="patched_1.15.2" level="application" />
     <orderEntry type="library" name="MarriageMaster" level="project" />
     <orderEntry type="library" name="MoeEco" level="project" />
     <orderEntry type="library" name="PlaceholderAPI-2.10.4" level="project" />
     <orderEntry type="library" name="MoePacketAPI" level="project" />
+    <orderEntry type="library" name="patched_1.16.1" level="application" />
   </component>
 </module>

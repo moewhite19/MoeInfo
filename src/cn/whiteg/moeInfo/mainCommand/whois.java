@@ -19,12 +19,12 @@ import java.util.*;
 
 import static cn.whiteg.moeInfo.MoeInfo.plugin;
 
-public class whosi extends CommandInterface {
+public class whois extends CommandInterface {
 
     private static Set<MessagerAbs> msgers = new LinkedHashSet<>();
     final SimpleDateFormat timeform = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public whosi() {
+    public whois() {
         regMessager(new MessagerAbs() {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
@@ -105,10 +105,10 @@ public class whosi extends CommandInterface {
         });
 
         regMessager(new MessagerAbs() {
-            final private String pat = "Player.qqid";
 
             @Override
             public String getMsg(CommandSender sender,DataCon dc) {
+                String pat = "Player.qqid";
                 long id = dc.getConfig().getLong(pat,0);
                 if (id == 0) return null;
                 return "§bQQ:§f " + id;
@@ -170,12 +170,12 @@ public class whosi extends CommandInterface {
     @Override
     public boolean onCommand(CommandSender sender,Command cmd,String label,String[] args) {
         if (sender instanceof Player && args.length == 1){
-            sendWhosi(sender,MMOCore.getPlayerData((Player) sender));
+            sendWhois(sender,MMOCore.getPlayerData((Player) sender));
             return true;
         }
         if (args.length == 2){
-            if (sender.hasPermission("moeinfo.whosi")){
-                sendWhosi(sender,MMOCore.getPlayerData(args[1],false));
+            if (sender.hasPermission("moeinfo.whois")){
+                sendWhois(sender,MMOCore.getPlayerData(args[1],false));
             }
         }
         return true;
@@ -183,10 +183,10 @@ public class whosi extends CommandInterface {
 
     @Override
     public List<String> onTabComplete(CommandSender sender,Command cmd,String label,String[] args) {
-        return null;
+        return getMatches(args,MMOCore.getLatelyPlayerList());
     }
 
-    public boolean sendWhosi(CommandSender sender,DataCon dc) {
+    public boolean sendWhois(CommandSender sender,DataCon dc) {
         if (dc == null){
             sender.sendMessage("找不到玩家");
             return false;

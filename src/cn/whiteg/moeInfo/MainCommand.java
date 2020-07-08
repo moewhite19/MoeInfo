@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainCommand extends CommandInterface {
-    public String[] allCommands = new String[]{"reload","prefix","suffix","namecolour","whosi","mute"};
+    public String[] allCommands = new String[]{"reload","prefix","suffix","namecolour","whois","mute"};
     public Map<String, CommandInterface> commandMap = new HashMap<>(allCommands.length);
     public SubCommand subCommand = new SubCommand();
 

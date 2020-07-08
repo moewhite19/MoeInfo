@@ -6,7 +6,9 @@ import cn.whiteg.mmocore.MMOCore;
 import cn.whiteg.mmocore.util.CoolDownUtil;
 import cn.whiteg.moeEco.VaultHandler;
 import cn.whiteg.moeInfo.api.TabPlayerListMsgAbs;
+import cn.whiteg.moeInfo.utils.CommonUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -39,6 +41,7 @@ public class TabPlayerlistsTimer extends Thread {
             }
         });
 
+
         regMeger(new TabPlayerListMsgAbs() {
             @Override
             public String getMsg(Player p,DataCon dc) {
@@ -56,7 +59,16 @@ public class TabPlayerlistsTimer extends Thread {
                 return null;
             }
         });
+
+        regMeger(new TabPlayerListMsgAbs() {
+            @Override
+            public String getMsg(Player player,DataCon dataCon) {
+                World world = player.getWorld();
+                return new StringBuilder("§b世界时间§f: ").append(CommonUtils.getWorldTime(world.getTime())).toString();
+            }
+        });
     }
+
 
     public void regMeger(TabPlayerListMsgAbs msger) {
         msgers.add(msger);
