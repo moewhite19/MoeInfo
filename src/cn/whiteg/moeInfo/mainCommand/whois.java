@@ -59,7 +59,7 @@ public class whois extends CommandInterface {
         regMessager(new MessagerAbs() {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
-                long l = Long.valueOf(dc.getString("Player.join_time","0"));
+                long l = Long.parseLong(dc.getString("Player.join_time","0"));
                 if (l == 0) return null;
                 Date date = new Date(l);
                 return ("§b加入时间: §f" + timeform.format(date));
@@ -68,13 +68,10 @@ public class whois extends CommandInterface {
         regMessager(new MessagerAbs() {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
-                if (p == null){
-                    long l = Long.valueOf(dc.getString("Player.login_time","0"));
-                    if (l == 0) return null;
-                    Date date = new Date(l);
-                    return "§b最后登录时间: §f" + timeform.format(date);
-                }
-                return null;
+                long l = Long.parseLong(dc.getString("Player.login_time","0"));
+                if (l == 0) return null;
+                Date date = new Date(l);
+                return "§b最后登录时间: §f" + timeform.format(date);
             }
         });
 
@@ -105,7 +102,6 @@ public class whois extends CommandInterface {
         });
 
         regMessager(new MessagerAbs() {
-
             @Override
             public String getMsg(CommandSender sender,DataCon dc) {
                 String pat = "Player.qqid";

@@ -4,7 +4,7 @@ import cn.whiteg.mmocore.common.PluginBase;
 import cn.whiteg.moeInfo.Listener.NickNameListener;
 import cn.whiteg.moeInfo.Listener.PlayerChatListener;
 import cn.whiteg.moeInfo.Listener.PlayerJoinMessage;
-import cn.whiteg.moeInfo.external.PlaceholdersAPI;
+import cn.whiteg.moeInfo.external.PlaceholdersHook;
 import cn.whiteg.moeInfo.external.VaultChatHandler;
 import cn.whiteg.moeInfo.external.VaultPermisson;
 import cn.whiteg.moeInfo.nms.SendBrand;
@@ -32,7 +32,7 @@ public class MoeInfo extends PluginBase {
     public boolean moetp;
     public Economy economy;
     public ExternalManage externalManage;
-    public PlaceholdersAPI placeholdersAPI;
+    public PlaceholdersHook placeholdersHook;
     private VaultChatHandler chatHandler;
 
     public void onLoad() {
@@ -87,8 +87,8 @@ public class MoeInfo extends PluginBase {
         }
         p = "PlaceholderAPI";
         if (Bukkit.getPluginManager().isPluginEnabled(p)){
-            placeholdersAPI = new PlaceholdersAPI();
-            if (placeholdersAPI.register()){
+            placeholdersHook = new PlaceholdersHook();
+            if (placeholdersHook.register()){
                 logger.info("PlaceholdersAPI Hook成功");
             } else {
                 logger.info("PlaceholdersAPI Hook失败");
@@ -111,11 +111,11 @@ public class MoeInfo extends PluginBase {
             logger.info("注销Vault聊天前后缀服务");
         }
         if (tabPlayerlistsTimer != null){
-            tabPlayerlistsTimer.remove();
+            tabPlayerlistsTimer.close();
             tabPlayerlistsTimer = null;
         }
-        if (placeholdersAPI != null){
-            placeholdersAPI.unregister();
+        if (placeholdersHook != null){
+            placeholdersHook.unregister();
         }
     }
 
@@ -125,10 +125,14 @@ public class MoeInfo extends PluginBase {
             MotdMan.setMotdName();
         }
         if (tabPlayerlistsTimer != null){
-            tabPlayerlistsTimer.remove();
+            tabPlayerlistsTimer.close();
             tabPlayerlistsTimer = null;
         }
         if (settin.PLAYERTAB) tabPlayerlistsTimer = new TabPlayerlistsTimer(this);
         updatePlayerList();
+    }
+
+    public boolean hasPlaceholder() {
+        return placeholdersHook != null;
     }
 }

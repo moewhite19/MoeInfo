@@ -1,9 +1,9 @@
 package cn.whiteg.moeInfo.nms;
 
 import io.netty.buffer.Unpooled;
-import net.minecraft.server.v1_16_R1.PacketDataSerializer;
-import net.minecraft.server.v1_16_R1.PacketPlayOutCustomPayload;
-import org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer;
+import net.minecraft.server.v1_16_R2.PacketDataSerializer;
+import net.minecraft.server.v1_16_R2.PacketPlayOutCustomPayload;
+import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class SendBrand_1_16_R1 implements SendBrand.SendBrandHander {

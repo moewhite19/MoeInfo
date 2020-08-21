@@ -5,9 +5,9 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 
-public class PlaceholdersAPI extends PlaceholderExpansion {
+public class PlaceholdersHook extends PlaceholderExpansion {
 
-    public PlaceholdersAPI() {
+    public PlaceholdersHook() {
 
     }
 
@@ -30,10 +30,10 @@ public class PlaceholdersAPI extends PlaceholderExpansion {
 
     public String onRequest(final OfflinePlayer player,String identifier) {
         switch (identifier) {
-            case "prefix": {
+            case "prefix": { //获取前缀
                 return noNull(PlayerDisplayNameManage.getPrefix(player));
             }
-            case "suffix": {
+            case "suffix": { //获取后缀
                 return noNull(PlayerDisplayNameManage.getSuffix(player));
             }
         }
@@ -47,9 +47,5 @@ public class PlaceholdersAPI extends PlaceholderExpansion {
 
     public String noNull(String str) {
         return str == null ? "" : str;
-    }
-
-    public boolean unregister() {
-        return PlaceholderAPI.unregisterExpansion(this);
     }
 }

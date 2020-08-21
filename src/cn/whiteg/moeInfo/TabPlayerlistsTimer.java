@@ -18,14 +18,14 @@ import static cn.whiteg.moeInfo.MoeInfo.settin;
 public class TabPlayerlistsTimer extends Thread {
     final private MoeInfo plugin;
     private Set<TabPlayerListMsgAbs> msgers = new LinkedHashSet<>();
-    private boolean run;
+    private boolean isRun;
 
     public TabPlayerlistsTimer(MoeInfo moeInfo) {
         plugin = moeInfo;
         setName("TabListTimer");
         setPriority(9);
         setDaemon(true);
-        run = true;
+        isRun = true;
         super.start();
         regMeger(new TabPlayerListMsgAbs() {
             @Override
@@ -41,13 +41,12 @@ public class TabPlayerlistsTimer extends Thread {
             }
         });
 
-
-        regMeger(new TabPlayerListMsgAbs() {
-            @Override
-            public String getMsg(Player p,DataCon dc) {
-                return new StringBuilder().append(" §b延迟:§f").append(p.spigot().getPing()).toString();
-            }
-        });
+//        regMeger(new TabPlayerListMsgAbs() {
+//            @Override
+//            public String getMsg(Player p,DataCon dc) {
+//                return new StringBuilder().append(" §b延迟:§f").append(p.spigot().getPing()).toString();
+//            }
+//        });
 
         regMeger(new TabPlayerListMsgAbs() {
             @Override
@@ -64,7 +63,10 @@ public class TabPlayerlistsTimer extends Thread {
             @Override
             public String getMsg(Player player,DataCon dataCon) {
                 World world = player.getWorld();
-                return new StringBuilder("§b世界时间§f: ").append(CommonUtils.getWorldTime(world.getTime())).toString();
+                if (world.getEnvironment() == World.Environment.NORMAL){
+                    return new StringBuilder("§b世界时间§f: ").append(CommonUtils.getWorldTime(world.getTime())).toString();
+                }
+                return null;
             }
         });
     }
@@ -90,7 +92,7 @@ public class TabPlayerlistsTimer extends Thread {
 
     @Override
     public void run() {
-        while (run) {
+        while (isRun) {
             try{
                 Collection<? extends Player> players = Bukkit.getOnlinePlayers();
                 if (players.isEmpty()){
@@ -100,10 +102,13 @@ public class TabPlayerlistsTimer extends Thread {
                 int sleptime = settin.TAB_TIMER_INTERVAL / players.size();
                 if (sleptime <= 0) sleptime = 1;
                 StringBuilder sb = new StringBuilder().append(settin.LISTHEAD);
+
+                //如果有MemFree插件则显示服务器状态
                 if (plugin.memfree)
                     sb.append("\n§7T:§f").append(String.format("%.2f",MemFree.plugin.timer.tps)).append(" §7- §f").append(players.size()).append("/").append(Bukkit.getServer().getMaxPlayers()).append("§7 -").append(" §7M:§f").append(String.format("%.2f",(MemFree.plugin.timer.use / (double) MemFree.plugin.timer.max) * 100)).append("%");
                 else
                     sb.append("\n§7- §f").append(players.size()).append("/").append(Bukkit.getServer().getMaxPlayers()).append("§7 -");
+
                 byte maxcont = (byte) (players.size() > 20 ? 3 : 2);
                 final String hd = sb.toString();
                 final Iterator<? extends Player> iterator = players.iterator();
@@ -126,9 +131,11 @@ public class TabPlayerlistsTimer extends Thread {
                         }
                     }
 
+                    //显示玩家的剩余cd状态
                     final CoolDownUtil.PlayerCd cds = CoolDownUtil.get(p.getName());
                     if (cds != null){
                         for (String ck : cds.getKeys()) {
+                            //只有在cd名称前面永远§符号的才会显示
                             if (!ck.startsWith("§")) continue;
                             int i = cds.getCds(ck);
                             if (i > 0){
@@ -144,7 +151,6 @@ public class TabPlayerlistsTimer extends Thread {
                         sb.append(" ");
                     }
                     p.setPlayerListHeaderFooter(hd,sb.toString());
-//                    p.setPlayerListName(p.getDisplayName() + "§r §7" + updateLoc(p));
                     sleep(sleptime);
                 }
             }catch (Throwable e){
@@ -154,8 +160,8 @@ public class TabPlayerlistsTimer extends Thread {
         }
     }
 
-    public void remove() {
-        run = false;
+    public void close() {
+        isRun = false;
         stop();
     }
 }

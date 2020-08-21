@@ -7,11 +7,11 @@ public class CommonUtils {
         //UTC + 6 时区
         h = (h + 6) % 24;
         int m = (int) ((time % 1000) * 0.06);
-        return new StringBuilder(number(h,2)).append(":").append(number(m,2)).toString();
+        return new StringBuilder(asNumber(h,2)).append(":").append(asNumber(m,2)).toString();
     }
 
     //将数字转换为指定长度的字符串，如果长度不够前面补全数字0
-    public static String number(int ver,int length) {
+    public static String asNumber(int ver,int length) {
         String str = String.valueOf(ver);
         int i = length - str.length();
         if (i > 0){
