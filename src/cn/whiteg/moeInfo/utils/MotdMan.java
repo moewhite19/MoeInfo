@@ -1,8 +1,8 @@
 package cn.whiteg.moeInfo.utils;
 
 import cn.whiteg.moeInfo.MoeInfo;
-import net.minecraft.server.v1_16_R2.DedicatedServer;
-import net.minecraft.server.v1_16_R2.MinecraftServer;
+import net.minecraft.server.v1_16_R3.DedicatedServer;
+import net.minecraft.server.v1_16_R3.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 

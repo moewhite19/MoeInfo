@@ -21,8 +21,8 @@ import static cn.whiteg.moeInfo.MoeInfo.plugin;
 
 public class whois extends CommandInterface {
 
-    private static Set<MessagerAbs> msgers = new LinkedHashSet<>();
-    final SimpleDateFormat timeform = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static Set<MessagerAbs> messagerAbsSet = new LinkedHashSet<>();
+    final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public whois() {
         regMessager(new MessagerAbs() {
@@ -59,10 +59,18 @@ public class whois extends CommandInterface {
         regMessager(new MessagerAbs() {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
+                String str = dc.getString("NameOnceUsed");
+                if (str == null || str.isEmpty()) return null;
+                return "§b曾用名: §f" + str;
+            }
+        });
+        regMessager(new MessagerAbs() {
+            @Override
+            public String getMsg(CommandSender p,DataCon dc) {
                 long l = Long.parseLong(dc.getString("Player.join_time","0"));
                 if (l == 0) return null;
                 Date date = new Date(l);
-                return ("§b加入时间: §f" + timeform.format(date));
+                return ("§b加入时间: §f" + timeFormat.format(date));
             }
         });
         regMessager(new MessagerAbs() {
@@ -71,9 +79,10 @@ public class whois extends CommandInterface {
                 long l = Long.parseLong(dc.getString("Player.login_time","0"));
                 if (l == 0) return null;
                 Date date = new Date(l);
-                return "§b最后登录时间: §f" + timeform.format(date);
+                return "§b最后登录时间: §f" + timeFormat.format(date);
             }
         });
+
 
         regMessager(new MessagerAbs() {
             @Override
@@ -108,14 +117,6 @@ public class whois extends CommandInterface {
                 long id = dc.getConfig().getLong(pat,0);
                 if (id == 0) return null;
                 return "§bQQ:§f " + id;
-//                Plugin plugin = Bukkit.getPluginManager().getPlugin("MoeQbot");
-//                if (plugin != null){
-//                    MoeQbot qbot = (MoeQbot) plugin;
-//                    Long qqid = qbot.getBindingManage().getQQID(dc.getName());
-//                    if (qqid == null) return null;
-//                    return "§bQQ:§f " + qqid;
-//                }
-//                return null;
             }
         });
 
@@ -156,20 +157,19 @@ public class whois extends CommandInterface {
     }
 
     public static void regMessager(MessagerAbs msg) {
-        msgers.add(msg);
+        messagerAbsSet.add(msg);
     }
 
     public static void unregMessager(MessagerAbs msg) {
-        msgers.remove(msg);
+        messagerAbsSet.remove(msg);
     }
 
     @Override
     public boolean onCommand(CommandSender sender,Command cmd,String label,String[] args) {
-        if (sender instanceof Player && args.length == 1){
-            sendWhois(sender,MMOCore.getPlayerData((Player) sender));
+        if (args.length == 1){
+            sendWhois(sender,MMOCore.getPlayerData(sender));
             return true;
-        }
-        if (args.length == 2){
+        } else if (args.length == 2){
             if (sender.hasPermission("moeinfo.whois")){
                 sendWhois(sender,MMOCore.getPlayerData(args[1],false));
             }
@@ -193,7 +193,7 @@ public class whois extends CommandInterface {
 
     public String summon(CommandSender sender,DataCon dataCon) {
         final StringBuilder sb = new StringBuilder();
-        Iterator<MessagerAbs> it = msgers.iterator();
+        Iterator<MessagerAbs> it = messagerAbsSet.iterator();
         while (it.hasNext()) {
             final MessagerAbs mr = it.next();
             String s = null;
