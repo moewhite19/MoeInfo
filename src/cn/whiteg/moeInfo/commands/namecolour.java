@@ -16,7 +16,7 @@ import java.util.List;
 public class namecolour extends HasCommandInterface {
 
     @Override
-    public boolean executor(CommandSender sender,Command cmd,String label,String[] args) {
+    public boolean executo(CommandSender sender,Command cmd,String label,String[] args) {
         if (args.length == 1){
             if (!(sender instanceof Player)){
                 sender.sendMessage("§b只有玩家才能使用这条指令");
@@ -59,7 +59,7 @@ public class namecolour extends HasCommandInterface {
     }
 
     @Override
-    public List<String> completer(CommandSender sender,Command cmd,String label,String[] args) {
+    public List<String> complete(CommandSender sender,Command cmd,String label,String[] args) {
         if (args.length == 1){
             if (sender instanceof Player){
                 String v1 = args[0];
