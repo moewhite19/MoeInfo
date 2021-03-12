@@ -1,5 +1,6 @@
 package cn.whiteg.moeInfo;
 
+import cn.whiteg.mmocore.common.CommandManage;
 import cn.whiteg.mmocore.common.PluginBase;
 import cn.whiteg.moeInfo.Listener.NickNameListener;
 import cn.whiteg.moeInfo.Listener.PlayerChatListener;
@@ -13,7 +14,6 @@ import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
@@ -25,7 +25,7 @@ public class MoeInfo extends PluginBase {
     public static Logger logger;
     public static MoeInfo plugin;
     public static Settin settin;
-    public MainCommand mainCmd;
+    public CommandManage mainCmd;
     public ConsoleCommandSender console;
     public TabPlayerlistsTimer tabPlayerlistsTimer;
     public boolean memfree = false;
@@ -59,12 +59,10 @@ public class MoeInfo extends PluginBase {
         if (settin.REPACECHAT){
             regListener(new PlayerChatListener());
         }
-        PluginCommand c = getCommand("MoeInfo");
-        if (c != null){
-            mainCmd = new MainCommand();
-            c.setExecutor(mainCmd);
-            c.setTabCompleter(mainCmd);
-        }
+
+        mainCmd = new CommandManage(this);
+        mainCmd.setExecutor();
+
         updatePlayerList();
 
         if (settin.PLAYERTAB) tabPlayerlistsTimer = new TabPlayerlistsTimer(this);
