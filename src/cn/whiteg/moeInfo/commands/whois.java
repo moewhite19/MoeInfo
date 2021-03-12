@@ -1,4 +1,4 @@
-package cn.whiteg.moeInfo.mainCommand;
+package cn.whiteg.moeInfo.commands;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Databases.Database;
 import cn.whiteg.mmocore.DataCon;

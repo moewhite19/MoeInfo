@@ -1,4 +1,4 @@
-package cn.whiteg.moeInfo.mainCommand;
+package cn.whiteg.moeInfo.commands;
 
 import cn.whiteg.mmocore.common.HasCommandInterface;
 import cn.whiteg.moeInfo.MoeInfo;

@@ -1,4 +1,4 @@
-package cn.whiteg.moeInfo.mainCommand;
+package cn.whiteg.moeInfo.commands;
 
 import cn.whiteg.mmocore.DataCon;
 import cn.whiteg.mmocore.MMOCore;
