@@ -9,6 +9,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public class mute extends HasCommandInterface {
 
     @Override
@@ -43,6 +45,11 @@ public class mute extends HasCommandInterface {
             sender.sendMessage("/mute <玩家ID> [时长] 来禁言玩家");
         }
         return false;
+    }
+
+    @Override
+    public List<String> completer(CommandSender sender,Command cmd,String str,String[] args) {
+        return getMatches(MMOCore.getLatelyPlayerList(),args);
     }
 
     @Override
