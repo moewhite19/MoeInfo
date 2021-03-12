@@ -179,6 +179,11 @@ public class whois extends CommandInterface {
         return true;
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender,Command command,String s,String[] args) {
+        return getMatches(MMOCore.getLatelyPlayerList(),args);
+    }
+
     public boolean sendWhois(CommandSender sender,DataCon dc) {
         if (dc == null){
             sender.sendMessage("找不到玩家");
