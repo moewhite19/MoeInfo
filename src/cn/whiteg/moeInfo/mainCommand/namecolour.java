@@ -2,7 +2,7 @@ package cn.whiteg.moeInfo.mainCommand;
 
 import cn.whiteg.mmocore.DataCon;
 import cn.whiteg.mmocore.MMOCore;
-import cn.whiteg.mmocore.common.CommandInterface;
+import cn.whiteg.mmocore.common.HasCommandInterface;
 import cn.whiteg.moeInfo.MoeInfo;
 import cn.whiteg.moeInfo.utils.PlayerDisplayNameManage;
 import org.bukkit.Bukkit;
@@ -13,17 +13,16 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 
-public class namecolour extends CommandInterface {
+public class namecolour extends HasCommandInterface {
 
     @Override
-    public boolean onCommand(CommandSender sender,Command cmd,String label,String[] args) {
-        if (!sender.hasPermission("mmo.namecolour")) return false;
-        if (args.length == 2){
+    public boolean executor(CommandSender sender,Command cmd,String label,String[] args) {
+        if (args.length == 1){
             if (!(sender instanceof Player)){
                 sender.sendMessage("§b只有玩家才能使用这条指令");
                 return true;
             }
-            String v1 = args[1];
+            String v1 = args[0];
             Player p = (Player) sender;
             DataCon dc = MMOCore.getPlayerData(p);
             if (v1.contains("&k") || v1.contains("&K")){
@@ -39,13 +38,13 @@ public class namecolour extends CommandInterface {
             PlayerDisplayNameManage.upView(player);
             sender.sendMessage("§b名字颜色设置为r§r " + player.getDisplayName());
             return true;
-        } else if (args.length == 3){
+        } else if (args.length == 2){
             if (!sender.hasPermission("whiteg.test")){
-                sender.sendMessage("阁下没有权限");
+                sender.sendMessage("参数有误");
                 return false;
             }
-            String v1 = args[1];
-            Player player = Bukkit.getPlayer(args[2]);
+            String v1 = args[0];
+            Player player = Bukkit.getPlayer(args[1]);
             if (player == null){
                 sender.sendMessage("玩家不在线");
                 return true;
@@ -60,16 +59,15 @@ public class namecolour extends CommandInterface {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender,Command cmd,String label,String[] args) {
-        if (!sender.hasPermission("mmo.namecolour")) return null;
-        if (args.length == 2){
+    public List<String> completer(CommandSender sender,Command cmd,String label,String[] args) {
+        if (args.length == 1){
             if (sender instanceof Player){
-                String v1 = args[1];
+                String v1 = args[0];
                 DataCon dc = MMOCore.getPlayerData(((Player) sender));
                 if (v1.contains("&k") || v1.contains("&K")){
                     return Collections.singletonList("包含违规字符");
                 }
-                if (v1.length() + sender.getName().length() + PlayerDisplayNameManage.getPrefix(dc).length() + PlayerDisplayNameManage.getSuffix(dc).length() > MoeInfo.settin.MAX_NAME_LENGTH){
+                if (!sender.hasPermission("whiteg.cn") && v1.length() + sender.getName().length() + PlayerDisplayNameManage.getPrefix(dc).length() + PlayerDisplayNameManage.getSuffix(dc).length() > MoeInfo.settin.MAX_NAME_LENGTH){
                     return Collections.singletonList("长度不符合");
                 }
                 String nn = PlayerDisplayNameManage.getNameColour((Player) sender);
@@ -86,5 +84,10 @@ public class namecolour extends CommandInterface {
 //            return Collections.singletonList(nn);
 //        }
         return PlayersList(args);
+    }
+
+    @Override
+    public boolean canUseCommand(CommandSender sender) {
+        return sender.hasPermission("mmo.namecolour");
     }
 }

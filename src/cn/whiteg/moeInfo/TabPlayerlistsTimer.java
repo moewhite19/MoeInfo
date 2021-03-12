@@ -32,9 +32,9 @@ public class TabPlayerlistsTimer extends Thread {
             public String getMsg(Player p,DataCon dc) {
                 if (plugin.economy != null){
                     if (plugin.economy instanceof VaultHandler){
-                        return new StringBuilder().append(" §b").append(plugin.economy.currencyNameSingular()).append(":§f").append(String.format("%.1f",((VaultHandler) plugin.economy).getBalance(dc))).toString();
+                        return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(((VaultHandler) plugin.economy).getFormatBalance(dc)).toString();
                     } else {
-                        return new StringBuilder().append(" §b").append(plugin.economy.currencyNameSingular()).append(":§f").append(String.format("%.1f",plugin.economy.getBalance(p.getName()))).toString();
+                        return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(String.format("%.1s",settin.decimalFormat.format(plugin.economy.getBalance(p.getName())))).toString();
                     }
                 }
                 return null;

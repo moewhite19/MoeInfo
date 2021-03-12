@@ -18,11 +18,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static cn.whiteg.moeInfo.MoeInfo.plugin;
+import static cn.whiteg.moeInfo.MoeInfo.settin;
 
 public class whois extends CommandInterface {
 
     private static Set<MessagerAbs> messagerAbsSet = new LinkedHashSet<>();
-    final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //时间格式
+
 
     public whois() {
         regMessager(new MessagerAbs() {
@@ -89,9 +91,9 @@ public class whois extends CommandInterface {
             public String getMsg(CommandSender p,DataCon dc) {
                 if (plugin.economy != null){
                     if (plugin.economy instanceof VaultHandler){
-                        return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(String.format("%.1f",((VaultHandler) plugin.economy).getBalance(dc))).toString();
+                        return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(((VaultHandler) plugin.economy).getFormatBalance(dc)).toString();
                     } else {
-                        return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(String.format("%.1f",plugin.economy.getBalance(p.getName()))).toString();
+                        return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(String.format("%.1s",settin.decimalFormat.format(plugin.economy.getBalance(p.getName())))).toString();
                     }
                 }
                 return null;
@@ -166,20 +168,15 @@ public class whois extends CommandInterface {
 
     @Override
     public boolean onCommand(CommandSender sender,Command cmd,String label,String[] args) {
-        if (args.length == 1){
+        if (args.length == 0){
             sendWhois(sender,MMOCore.getPlayerData(sender));
             return true;
-        } else if (args.length == 2){
+        } else if (args.length == 1){
             if (sender.hasPermission("moeinfo.whois")){
-                sendWhois(sender,MMOCore.getPlayerData(args[1],false));
+                sendWhois(sender,MMOCore.getPlayerData(args[0],false));
             }
         }
         return true;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender,Command cmd,String label,String[] args) {
-        return getMatches(args,MMOCore.getLatelyPlayerList());
     }
 
     public boolean sendWhois(CommandSender sender,DataCon dc) {

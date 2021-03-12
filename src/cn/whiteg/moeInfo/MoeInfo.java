@@ -35,6 +35,7 @@ public class MoeInfo extends PluginBase {
     public PlaceholdersHook placeholdersHook;
     private VaultChatHandler chatHandler;
 
+
     public void onLoad() {
         saveDefaultConfig();
     }

@@ -5,10 +5,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class Settin {
     public final String mutePath = "Player.mute";
+    public final DecimalFormat decimalFormat = new DecimalFormat("###,###,###,###.##");
     public boolean DEBUG;
     public String LISTHEAD;
     public String PLAYER_JOIN_MESSAGE;

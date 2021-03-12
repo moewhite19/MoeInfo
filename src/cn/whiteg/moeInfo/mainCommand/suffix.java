@@ -18,12 +18,12 @@ public class suffix extends CommandInterface {
     @Override
     public boolean onCommand(CommandSender sender,Command cmd,String label,String[] args) {
         if (!sender.hasPermission("mmo.suffix")) return false;
-        if (args.length == 2){
+        if (args.length == 1){
             if (!(sender instanceof Player)){
                 sender.sendMessage("§b只有玩家才能使用这条指令");
                 return true;
             }
-            String v1 = args[1];
+            String v1 = args[0];
             Player p = (Player) sender;
             DataCon dc = MMOCore.getPlayerData(p);
             if (v1.contains("&k") || v1.contains("&K")){
@@ -40,13 +40,13 @@ public class suffix extends CommandInterface {
             PlayerDisplayNameManage.upView(player);
             sender.sendMessage("§b后缀设置为r§r " + player.getDisplayName());
             return true;
-        } else if (args.length == 3){
+        } else if (args.length == 2){
             if (!sender.hasPermission("whiteg.test")){
                 sender.sendMessage("阁下没有权限");
                 return false;
             }
-            String v1 = args[1];
-            Player player = Bukkit.getPlayer(args[2]);
+            String v1 = args[0];
+            Player player = Bukkit.getPlayer(args[1]);
             if (player == null){
                 sender.sendMessage("玩家不在线");
                 return true;
@@ -64,14 +64,14 @@ public class suffix extends CommandInterface {
     @Override
     public List<String> onTabComplete(CommandSender sender,Command cmd,String label,String[] args) {
         if (!sender.hasPermission("mmo.suffix")) return null;
-        if (args.length == 2){
+        if (args.length == 1){
             if (sender instanceof Player){
-                String v1 = args[1];
+                String v1 = args[0];
                 DataCon dc = MMOCore.getPlayerData(((Player) sender));
                 if (v1.contains("&k") || v1.contains("&K")){
                     return Collections.singletonList("包含违规字符");
                 }
-                if (v1.length() + sender.getName().length() + PlayerDisplayNameManage.getNameColour(dc).length() + PlayerDisplayNameManage.getPrefix(dc).length() > MoeInfo.settin.MAX_NAME_LENGTH){
+                if (!sender.hasPermission("whiteg.cn") && v1.length() + sender.getName().length() + PlayerDisplayNameManage.getNameColour(dc).length() + PlayerDisplayNameManage.getPrefix(dc).length() > MoeInfo.settin.MAX_NAME_LENGTH){
                     return Collections.singletonList("长度不符合");
                 }
                 String nn = PlayerDisplayNameManage.getSuffix((Player) sender);
