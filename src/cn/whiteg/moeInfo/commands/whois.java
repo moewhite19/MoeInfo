@@ -6,7 +6,7 @@ import cn.whiteg.mmocore.MMOCore;
 import cn.whiteg.mmocore.common.CommandInterface;
 import cn.whiteg.moeEco.VaultHandler;
 import cn.whiteg.moeInfo.MoeInfo;
-import cn.whiteg.moeInfo.api.MessagerAbs;
+import cn.whiteg.moeInfo.api.WhoisMessageProvider;
 import cn.whiteg.moeInfo.utils.PlayerDisplayNameManage;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,12 +22,11 @@ import static cn.whiteg.moeInfo.MoeInfo.settin;
 
 public class whois extends CommandInterface {
 
-    private static Set<MessagerAbs> messagerAbsSet = new LinkedHashSet<>();
+    private static Set<WhoisMessageProvider> messagers = new LinkedHashSet<>();
     final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //时间格式
 
-
     public whois() {
-        regMessager(new MessagerAbs() {
+        regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
                 StringBuilder sb = new StringBuilder("§bID: §f");
@@ -38,27 +37,27 @@ public class whois extends CommandInterface {
                 return sb.toString();
             }
         });
-        regMessager(new MessagerAbs() {
+        regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
                 return "§bUUID: §f" + dc.getUUID().toString();
             }
         });
-        regMessager(new MessagerAbs() {
+        regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
                 String str = PlayerDisplayNameManage.getPrefix(dc);
                 return str.isEmpty() ? null : ("§b前缀: §f" + ChatColor.translateAlternateColorCodes('&',str));
             }
         });
-        regMessager(new MessagerAbs() {
+        regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
                 String str = PlayerDisplayNameManage.getSuffix(dc);
                 return str.isEmpty() ? null : ("§b后缀: §f" + ChatColor.translateAlternateColorCodes('&',str));
             }
         });
-        regMessager(new MessagerAbs() {
+        regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
                 String str = dc.getString("NameOnceUsed");
@@ -66,7 +65,7 @@ public class whois extends CommandInterface {
                 return "§b曾用名: §f" + str;
             }
         });
-        regMessager(new MessagerAbs() {
+        regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
                 long l = Long.parseLong(dc.getString("Player.join_time","0"));
@@ -75,7 +74,7 @@ public class whois extends CommandInterface {
                 return ("§b加入时间: §f" + timeFormat.format(date));
             }
         });
-        regMessager(new MessagerAbs() {
+        regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
                 long l = Long.parseLong(dc.getString("Player.login_time","0"));
@@ -86,7 +85,7 @@ public class whois extends CommandInterface {
         });
 
 
-        regMessager(new MessagerAbs() {
+        regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
                 if (plugin.economy != null){
@@ -100,7 +99,7 @@ public class whois extends CommandInterface {
             }
         });
 
-        regMessager(new MessagerAbs() {
+        regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender sender,DataCon dc) {
                 if (plugin.externalManage.marriageMaster == null){
@@ -112,7 +111,7 @@ public class whois extends CommandInterface {
             }
         });
 
-        regMessager(new MessagerAbs() {
+        regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender sender,DataCon dc) {
                 String pat = "Player.qqid";
@@ -122,7 +121,7 @@ public class whois extends CommandInterface {
             }
         });
 
-        regMessager(new MessagerAbs() {
+        regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
                 if (!p.hasPermission("whiteg.test")) return null;
@@ -133,7 +132,7 @@ public class whois extends CommandInterface {
                 return null;
             }
         });
-        regMessager(new MessagerAbs() {
+        regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender sender,DataCon dc) {
                 if (!sender.hasPermission("whiteg.test")) return null;
@@ -148,7 +147,7 @@ public class whois extends CommandInterface {
                 return null;
             }
         });
-//        regMessager(new MessagerAbs() {
+//        regMessager(new MessagerAbs(plugin) {
 //            @Override
 //            public String getMsg(Player p,DataCon dc) {
 //                double d = dc.getConfig().getDouble("zz",0);
@@ -158,12 +157,12 @@ public class whois extends CommandInterface {
 //        });
     }
 
-    public static void regMessager(MessagerAbs msg) {
-        messagerAbsSet.add(msg);
+    public static void regMessager(WhoisMessageProvider msg) {
+        messagers.add(msg);
     }
 
-    public static void unregMessager(MessagerAbs msg) {
-        messagerAbsSet.remove(msg);
+    public static void unregMessager(WhoisMessageProvider msg) {
+        messagers.remove(msg);
     }
 
     @Override
@@ -195,14 +194,19 @@ public class whois extends CommandInterface {
 
     public String summon(CommandSender sender,DataCon dataCon) {
         final StringBuilder sb = new StringBuilder();
-        Iterator<MessagerAbs> it = messagerAbsSet.iterator();
+        Iterator<WhoisMessageProvider> it = messagers.iterator();
         while (it.hasNext()) {
-            final MessagerAbs mr = it.next();
-            String s = null;
+            final WhoisMessageProvider mr = it.next();
+            if (!mr.isEnable()){
+                it.remove();
+                continue;
+            }
+            String s;
             try{
                 s = mr.getMsg(sender,dataCon);
             }catch (Exception e){
                 e.printStackTrace();
+                s = e.getMessage();
             }
             if (s != null){
                 sb.append(s).append("\n");
