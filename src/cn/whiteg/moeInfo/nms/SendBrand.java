@@ -10,7 +10,7 @@ public class SendBrand {
     static {
         String ver = Bukkit.getBukkitVersion();
         try{
-            hander = new SendBrand_1_16_R1();
+            hander = new SendBrand_1_16_R3();
         }catch (Exception e){
 
         }

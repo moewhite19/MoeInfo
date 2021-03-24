@@ -2,7 +2,6 @@ package cn.whiteg.moeInfo;
 
 import cn.whiteg.mmocore.common.CommandManage;
 import cn.whiteg.mmocore.common.PluginBase;
-import cn.whiteg.moeInfo.Listener.NickNameListener;
 import cn.whiteg.moeInfo.Listener.PlayerChatListener;
 import cn.whiteg.moeInfo.Listener.PlayerJoinMessage;
 import cn.whiteg.moeInfo.external.PlaceholdersHook;
@@ -53,9 +52,6 @@ public class MoeInfo extends PluginBase {
         logger.info("开始注册事件");
         //regEven(new TabListListener());
         regListener(new PlayerJoinMessage());
-        if (settin.NICKNAME){
-            regListener(new NickNameListener());
-        }
         if (settin.REPACECHAT){
             regListener(new PlayerChatListener());
         }

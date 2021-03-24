@@ -5,6 +5,7 @@ import cn.whiteg.mmocore.DataCon;
 import cn.whiteg.mmocore.MMOCore;
 import cn.whiteg.mmocore.common.CommandInterface;
 import cn.whiteg.moeEco.VaultHandler;
+import cn.whiteg.moeInfo.Listener.ShowPlayerResourceStatus;
 import cn.whiteg.moeInfo.MoeInfo;
 import cn.whiteg.moeInfo.api.WhoisMessageProvider;
 import cn.whiteg.moeInfo.utils.PlayerDisplayNameManage;
@@ -14,18 +15,18 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static cn.whiteg.moeInfo.MoeInfo.plugin;
-import static cn.whiteg.moeInfo.MoeInfo.settin;
 
 public class whois extends CommandInterface {
 
-    private static Set<WhoisMessageProvider> messagers = new LinkedHashSet<>();
-    final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //时间格式
+    final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //时间格式
+    final static DecimalFormat decimalFormat = new DecimalFormat(".##");
+    final static Set<WhoisMessageProvider> messagers = new LinkedHashSet<>();
 
-    public whois() {
+    public whois(MoeInfo plugin) {
         regMessager(new WhoisMessageProvider(plugin) {
             @Override
             public String getMsg(CommandSender p,DataCon dc) {
@@ -71,7 +72,7 @@ public class whois extends CommandInterface {
                 long l = Long.parseLong(dc.getString("Player.join_time","0"));
                 if (l == 0) return null;
                 Date date = new Date(l);
-                return ("§b加入时间: §f" + timeFormat.format(date));
+                return ("§b加入时间: §f" + dateFormat.format(date));
             }
         });
         regMessager(new WhoisMessageProvider(plugin) {
@@ -80,7 +81,7 @@ public class whois extends CommandInterface {
                 long l = Long.parseLong(dc.getString("Player.login_time","0"));
                 if (l == 0) return null;
                 Date date = new Date(l);
-                return "§b最后登录时间: §f" + timeFormat.format(date);
+                return "§b最后登录时间: §f" + dateFormat.format(date);
             }
         });
 
@@ -92,7 +93,7 @@ public class whois extends CommandInterface {
                     if (plugin.economy instanceof VaultHandler){
                         return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(((VaultHandler) plugin.economy).getFormatBalance(dc)).toString();
                     } else {
-                        return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(String.format("%.1s",settin.decimalFormat.format(plugin.economy.getBalance(p.getName())))).toString();
+                        return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(String.format("%.1s",MoeInfo.settin.decimalFormat.format(plugin.economy.getBalance(p.getName())))).toString();
                     }
                 }
                 return null;
@@ -139,14 +140,23 @@ public class whois extends CommandInterface {
                 Player p = dc.getPlayer();
                 if (p != null){
                     Location loc = p.getLocation();
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("§b位置:§f " + (plugin.externalManage.multiverseCore == null ? p.getWorld().getName() : plugin.externalManage.multiverseCore.getMVWorldManager().getMVWorld(p.getWorld()).getAlias()) + "§fX:" + loc.getBlockX() + " Y:" + loc.getBlockY() + " Z:" + loc.getBlockZ());
-                    sb.append("\n§b生命值:§f " + p.getHealth());
-                    return sb.toString();
+                    return new StringBuilder()
+                            .append("§b位置:§f ").
+                                    append(plugin.externalManage.multiverseCore == null ? p.getWorld().getName() : plugin.externalManage.multiverseCore.getMVWorldManager().getMVWorld(p.getWorld()).getAlias()).
+                                    append("§fX:").append(decimalFormat.format(loc.getBlockX())).
+                                    append(" Y:").append(decimalFormat.format(loc.getBlockY())).
+                                    append(" Z:").append(decimalFormat.format(loc.getBlockZ()))
+                            .append("\n§b生命值:§f ").append(decimalFormat.format(p.getHealth()))
+                            .append("\n§b视距:§f ").append(p.getClientViewDistance()).toString();
                 }
                 return null;
             }
         });
+
+        //注册显示资源包状态
+        var showPackStatus = new ShowPlayerResourceStatus(plugin);
+        regMessager(showPackStatus);
+        plugin.regListener(showPackStatus);
 //        regMessager(new MessagerAbs(plugin) {
 //            @Override
 //            public String getMsg(Player p,DataCon dc) {
@@ -163,6 +173,14 @@ public class whois extends CommandInterface {
 
     public static void unregMessager(WhoisMessageProvider msg) {
         messagers.remove(msg);
+    }
+
+    public static DecimalFormat getDecimalFormat() {
+        return decimalFormat;
+    }
+
+    public static SimpleDateFormat getDateFormat() {
+        return dateFormat;
     }
 
     @Override
@@ -197,19 +215,19 @@ public class whois extends CommandInterface {
         Iterator<WhoisMessageProvider> it = messagers.iterator();
         while (it.hasNext()) {
             final WhoisMessageProvider mr = it.next();
-            if (!mr.isEnable()){
+            if (mr.isEnable()){
+                String s;
+                try{
+                    s = mr.getMsg(sender,dataCon);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    s = e.getMessage();
+                }
+                if (s != null){
+                    sb.append(s).append("\n");
+                }
+            } else {
                 it.remove();
-                continue;
-            }
-            String s;
-            try{
-                s = mr.getMsg(sender,dataCon);
-            }catch (Exception e){
-                e.printStackTrace();
-                s = e.getMessage();
-            }
-            if (s != null){
-                sb.append(s).append("\n");
             }
         }
         return sb.deleteCharAt(sb.length() - 1).toString();

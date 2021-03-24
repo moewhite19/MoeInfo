@@ -5,11 +5,11 @@ import cn.whiteg.mmocore.DataCon;
 import cn.whiteg.mmocore.MMOCore;
 import cn.whiteg.mmocore.util.CoolDownUtil;
 import cn.whiteg.moeEco.VaultHandler;
-import cn.whiteg.moeInfo.api.TabPlayerListMsgAbs;
-import cn.whiteg.moeInfo.utils.CommonUtils;
+import cn.whiteg.moeInfo.api.TabMessageProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import cn.whiteg.moeInfo.utils.CommonUtils;
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ import static cn.whiteg.moeInfo.MoeInfo.settin;
 
 public class TabPlayerlistsTimer extends Thread {
     final private MoeInfo plugin;
-    private Set<TabPlayerListMsgAbs> msgers = new LinkedHashSet<>();
+    private final Set<TabMessageProvider> msgers = new LinkedHashSet<>();
     private boolean isRun;
 
     public TabPlayerlistsTimer(MoeInfo moeInfo) {
@@ -27,28 +27,24 @@ public class TabPlayerlistsTimer extends Thread {
         setDaemon(true);
         isRun = true;
         super.start();
-        regMeger(new TabPlayerListMsgAbs() {
+        regMeger(new TabMessageProvider(plugin) {
             @Override
             public String getMsg(Player p,DataCon dc) {
                 if (plugin.economy != null){
-                    if (plugin.economy instanceof VaultHandler){
-                        return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(((VaultHandler) plugin.economy).getFormatBalance(dc)).toString();
-                    } else {
-                        return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(String.format("%.1s",settin.decimalFormat.format(plugin.economy.getBalance(p.getName())))).toString();
-                    }
+                    return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(((VaultHandler) plugin.economy).getFormatBalance(dc)).toString();
                 }
                 return null;
             }
         });
 
-//        regMeger(new TabPlayerListMsgAbs() {
-//            @Override
-//            public String getMsg(Player p,DataCon dc) {
-//                return new StringBuilder().append(" §b延迟:§f").append(p.spigot().getPing()).toString();
-//            }
-//        });
+        regMeger(new TabMessageProvider(plugin) {
+            @Override
+            public String getMsg(Player p,DataCon dc) {
+                return new StringBuilder().append(" §b延迟:§f").append(p.spigot().getPing()).toString();
+            }
+        });
 
-        regMeger(new TabPlayerListMsgAbs() {
+        regMeger(new TabMessageProvider(plugin) {
             @Override
             public String getMsg(Player p,DataCon dc) {
                 final String mar = plugin.externalManage.marriageMaster == null ? null : plugin.externalManage.marriageMaster.DB.GetPartner(p.getName());
@@ -59,7 +55,7 @@ public class TabPlayerlistsTimer extends Thread {
             }
         });
 
-        regMeger(new TabPlayerListMsgAbs() {
+        regMeger(new TabMessageProvider(plugin) {
             @Override
             public String getMsg(Player player,DataCon dataCon) {
                 World world = player.getWorld();
@@ -72,11 +68,11 @@ public class TabPlayerlistsTimer extends Thread {
     }
 
 
-    public void regMeger(TabPlayerListMsgAbs msger) {
+    public void regMeger(TabMessageProvider msger) {
         msgers.add(msger);
     }
 
-    public void unreg(TabPlayerListMsgAbs msger) {
+    public void unreg(TabMessageProvider msger) {
         msgers.remove(msger);
     }
 
@@ -117,9 +113,15 @@ public class TabPlayerlistsTimer extends Thread {
                     if (!p.isOnline()) continue;
                     List<String> infos = new ArrayList<>();
                     final DataCon dc = MMOCore.getPlayerData(p);
-                    Iterator<TabPlayerListMsgAbs> it = msgers.iterator();
+                    Iterator<TabMessageProvider> it = msgers.iterator();
                     while (it.hasNext()) {
-                        TabPlayerListMsgAbs mr = it.next();
+                        TabMessageProvider mr = it.next();
+
+                        if (!mr.isEnable()){
+                            it.remove();
+                            continue;
+                        }
+
                         String s = null;
                         try{
                             s = mr.getMsg(p,dc);
@@ -135,7 +137,7 @@ public class TabPlayerlistsTimer extends Thread {
                     final CoolDownUtil.PlayerCd cds = CoolDownUtil.get(p.getName());
                     if (cds != null){
                         for (String ck : cds.getKeys()) {
-                            //只有在cd名称前面永远§符号的才会显示
+                            //只显示带§颜色的cd
                             if (!ck.startsWith("§")) continue;
                             int i = cds.getCds(ck);
                             if (i > 0){
