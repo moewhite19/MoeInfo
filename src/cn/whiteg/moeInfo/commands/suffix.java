@@ -42,7 +42,7 @@ public class suffix extends CommandInterface {
             return true;
         } else if (args.length == 2){
             if (!sender.hasPermission("whiteg.test")){
-                sender.sendMessage("阁下没有权限");
+                sender.sendMessage("格式有误或者阁下没有权限");
                 return false;
             }
             String v1 = args[0];

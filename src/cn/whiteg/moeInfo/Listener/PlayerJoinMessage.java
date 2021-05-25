@@ -14,9 +14,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerJoinMessage implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
+        if (MoeInfo.settin.NICKNAME) PlayerDisplayNameManage.upView(event.getPlayer());
         event.joinMessage(ComponentUtils.ofString(MoeInfo.settin.PLAYER_JOIN_MESSAGE.replace("%player%",event.getPlayer().getDisplayName())));
         SendBrand.send(event.getPlayer(),MoeInfo.settin.f3info);
-        if (MoeInfo.settin.NICKNAME) PlayerDisplayNameManage.upView(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

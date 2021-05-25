@@ -76,13 +76,6 @@ public class namecolour extends HasCommandInterface {
                 return Collections.singletonList(nn);
             }
         }
-//        if (args.length == 3){
-//            Player player = Bukkit.getPlayerExact(args[2]);
-//            if (player == null) return null;
-//            String nn = PlayerDisplayNameManage.getPrefix(player);
-//            if (nn != null) nn = nn.replace("§","&");
-//            return Collections.singletonList(nn);
-//        }
         return PlayersList(args);
     }
 

@@ -114,16 +114,6 @@ public class whois extends CommandInterface {
 
         regMessager(new WhoisMessageProvider(plugin) {
             @Override
-            public String getMsg(CommandSender sender,DataCon dc) {
-                String pat = "Player.qqid";
-                long id = dc.getConfig().getLong(pat,0);
-                if (id == 0) return null;
-                return "§bQQ:§f " + id;
-            }
-        });
-
-        regMessager(new WhoisMessageProvider(plugin) {
-            @Override
             public String getMsg(CommandSender p,DataCon dc) {
                 if (!p.hasPermission("whiteg.test")) return null;
                 String ip = dc.getString("Player.latest_login_ip");
