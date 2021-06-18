@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Multiverse-Core">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../Multiverse-Core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Multiverse-Core/Multiverse-Core.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -6,10 +6,10 @@ import cn.whiteg.mmocore.MMOCore;
 import cn.whiteg.mmocore.util.CoolDownUtil;
 import cn.whiteg.moeEco.VaultHandler;
 import cn.whiteg.moeInfo.api.TabMessageProvider;
+import cn.whiteg.moeInfo.utils.CommonUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import cn.whiteg.moeInfo.utils.CommonUtils;
 
 import java.util.*;
 
@@ -36,13 +36,13 @@ public class TabPlayerlistsTimer extends Thread {
                 return null;
             }
         });
-
-        regMeger(new TabMessageProvider(plugin) {
-            @Override
-            public String getMsg(Player p,DataCon dc) {
-                return new StringBuilder().append(" §b延迟:§f").append(p.spigot().getPing()).toString();
-            }
-        });
+//Spigot方法
+//        regMeger(new TabMessageProvider(plugin) {
+//            @Override
+//            public String getMsg(Player p,DataCon dc) {
+//                return new StringBuilder().append(" §b延迟:§f").append(p.spigot().getPing()).toString();
+//            }
+//        });
 
         regMeger(new TabMessageProvider(plugin) {
             @Override

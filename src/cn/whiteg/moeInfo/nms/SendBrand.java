@@ -1,33 +1,19 @@
 package cn.whiteg.moeInfo.nms;
 
-import cn.whiteg.moeInfo.MoeInfo;
-import org.bukkit.Bukkit;
+import cn.whiteg.moeInfo.utils.EntityNetUtils;
+import io.netty.buffer.Unpooled;
+import net.minecraft.network.PacketDataSerializer;
+import net.minecraft.network.protocol.game.PacketPlayOutCustomPayload;
 import org.bukkit.entity.Player;
 
 public class SendBrand {
-    static SendBrandHander hander;
-
-    static {
-        String ver = Bukkit.getBukkitVersion();
-        try{
-            hander = new SendBrand_1_16_R3();
-        }catch (Exception e){
-
-        }
-        if (hander == null){
-            MoeInfo.logger.info("没有适配的版本: " + ver);
-        }
-    }
-
-    public static void send(Player player,String string) {
-        if (hander != null) hander.send(player,string);
-    }
-
-    public static SendBrandHander getHandle() {
-        return hander;
-    }
-
-    public interface SendBrandHander {
-        void send(Player player,String msg);
+    public static void send(Player player,String brand) {
+        //brand = PAPIHook.getPAPIString(player, brand);
+        //Validate.notNull(player,"Player is null!");
+        //Validate.notNull(brand,"Server brand is null!");
+        if (player == null) return;
+        if (brand == null) return;
+        var np = EntityNetUtils.getNmsPlayer(player);
+        EntityNetUtils.getPlayerConnection(np).sendPacket(new PacketPlayOutCustomPayload(PacketPlayOutCustomPayload.a,new PacketDataSerializer(Unpooled.buffer()).a(brand)));
     }
 }
