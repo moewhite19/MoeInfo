@@ -9,6 +9,7 @@ import cn.whiteg.moeInfo.api.TabMessageProvider;
 import cn.whiteg.moeInfo.utils.CommonUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -36,13 +37,13 @@ public class TabPlayerlistsTimer extends Thread {
                 return null;
             }
         });
-//Spigot方法
-//        regMeger(new TabMessageProvider(plugin) {
-//            @Override
-//            public String getMsg(Player p,DataCon dc) {
-//                return new StringBuilder().append(" §b延迟:§f").append(p.spigot().getPing()).toString();
-//            }
-//        });
+
+        regMeger(new TabMessageProvider(plugin) {
+            @Override
+            public String getMsg(Player p,DataCon dc) {
+                return new StringBuilder().append(" §b延迟:§f").append(p.getPing()).toString();
+            }
+        });
 
         regMeger(new TabMessageProvider(plugin) {
             @Override
