@@ -12,4 +12,8 @@ public abstract class MessageProvider {
     public boolean isEnable() {
         return plugin != null && plugin.isEnabled();
     }
+
+    public JavaPlugin getPlugin() {
+        return plugin;
+    }
 }

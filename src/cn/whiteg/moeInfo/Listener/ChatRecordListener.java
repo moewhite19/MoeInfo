@@ -43,7 +43,7 @@ public class ChatRecordListener implements Listener {
         putMessage(event.quitMessage());
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
     public void onJoin(PlayerJoinEvent event) {
         //当玩家加入时发送聊天记录，并收集加入消息
         synchronized (list) {

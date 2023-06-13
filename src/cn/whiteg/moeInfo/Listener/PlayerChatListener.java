@@ -85,17 +85,19 @@ public class PlayerChatListener implements Listener {
 
         cb.append(" ").reset();
 
-        cb.append(msg);
         //消息内容
+        cb.append(msg).reset();
         cb.event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,msg));
         cb.event((HoverEvent) null);
-        final BaseComponent[] bc = cb.create();
+
+
+        final BaseComponent[] finalMessage = cb.create();
         for (Player p : Bukkit.getOnlinePlayers()) {
-            p.spigot().sendMessage(ChatMessageType.CHAT,sender.getUniqueId(),bc);
+            p.spigot().sendMessage(ChatMessageType.CHAT,sender.getUniqueId(),finalMessage);
         }
 
         final StringBuilder sb = new StringBuilder();
-        for (BaseComponent baseComponent : bc) sb.append(baseComponent.toLegacyText());
+        for (BaseComponent baseComponent : finalMessage) sb.append(baseComponent.toLegacyText());
         final String messageString = sb.toString();
         final ChatRecordListener recordListener = MoeInfo.plugin.getChatRecordListener();
         //向控制台发送消息

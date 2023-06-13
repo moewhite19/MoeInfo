@@ -1,6 +1,6 @@
 package cn.whiteg.moeInfo.utils;
 
-import cn.whiteg.mmocore.util.NMSUtils;
+import cn.whiteg.mmocore.reflection.ReflectUtil;
 import io.netty.channel.Channel;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.server.level.EntityPlayer;
@@ -21,9 +21,9 @@ public class EntityNetUtils {
 
     static {
         try{
-            entity_counter = NMSUtils.getFieldFormType(EntityPlayer.class,PlayerConnection.class);
-            connect_network = NMSUtils.getFieldFormType(PlayerConnection.class,NetworkManager.class);
-            network_channel = NMSUtils.getFieldFormType(NetworkManager.class,Channel.class);
+            entity_counter = ReflectUtil.getFieldFormType(EntityPlayer.class,PlayerConnection.class);
+            connect_network = ReflectUtil.getFieldFormType(PlayerConnection.class,NetworkManager.class);
+            network_channel = ReflectUtil.getFieldFormType(NetworkManager.class,Channel.class);
         }catch (Exception e){
             e.printStackTrace();
         }

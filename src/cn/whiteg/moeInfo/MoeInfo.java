@@ -3,7 +3,6 @@ package cn.whiteg.moeInfo;
 import cn.whiteg.mmocore.DataCon;
 import cn.whiteg.mmocore.common.CommandManage;
 import cn.whiteg.mmocore.common.PluginBase;
-import cn.whiteg.moeInfo.Listener.AntiPopup;
 import cn.whiteg.moeInfo.Listener.ChatRecordListener;
 import cn.whiteg.moeInfo.Listener.PlayerChatListener;
 import cn.whiteg.moeInfo.Listener.PlayerJoinMessage;
@@ -80,10 +79,12 @@ public class MoeInfo extends PluginBase {
         regListener(externalManage);
 
         //去除进入服务器后无法验证聊天消息的弹窗
-        try{
-            regListener(new AntiPopup());
-        }catch (Exception e){
-            e.printStackTrace();
+        if (settin.AntiPopup){
+            try{
+//                regListener(new AntiPopup());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         String p;

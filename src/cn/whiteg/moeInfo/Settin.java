@@ -24,6 +24,7 @@ public class Settin {
     public boolean REPACECHAT;
     public boolean PLAYERTAB;
     public boolean ExternalVault;
+    public boolean AntiPopup;
     public List<String> MuteCommands;
     private FileConfiguration config;
 
@@ -47,6 +48,7 @@ public class Settin {
         REPACECHAT = config.getBoolean("RepaceChat",false);
         PLAYERTAB = config.getBoolean("PlayerTabList",false);
         ExternalVault = config.getBoolean("ExternalVault",false);
+        AntiPopup = config.getBoolean("AntiPopup" , true);
         MuteCommands = config.getStringList("MuteCommands");
     }
 

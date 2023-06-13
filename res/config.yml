@@ -27,6 +27,9 @@ RepaceChat: true
 #保存聊天记录，当玩家加入时发送给玩家。(最大:100)
 ChatRecord: 50
 
+#去除进入服务器后无法验证聊天消息的弹窗
+AntiPopup: true
+
 #前后缀最大长度（玩家更改前后缀时会和玩家自己ID等加起来最长允许的数值）
 MaxNameLength: 21
 #设置服务器MOTD
