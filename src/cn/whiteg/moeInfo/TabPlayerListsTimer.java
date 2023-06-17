@@ -55,6 +55,17 @@ public class TabPlayerListsTimer extends Thread {
             }
         });
 
+/*        regMeger(new TabMessageProvider(plugin) {
+            @Override
+            public String getMsg(Player player,DataCon dataCon) {
+                World world = player.getWorld();
+                if (world.getEnvironment() == World.Environment.NORMAL){
+//                    return new StringBuilder("§b世界§f: ").append(CommonUtils.).toString();
+                }
+                return null;
+            }
+        });*/
+
         regMeger(new TabMessageProvider(plugin) {
             @Override
             public String getMsg(Player player,DataCon dataCon) {
@@ -65,6 +76,8 @@ public class TabPlayerListsTimer extends Thread {
                 return null;
             }
         });
+
+
     }
 
 

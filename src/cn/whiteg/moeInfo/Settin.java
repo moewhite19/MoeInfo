@@ -13,8 +13,8 @@ public class Settin {
     public final DecimalFormat decimalFormat = new DecimalFormat("###,###,###,###.##");
     public boolean DEBUG;
     public String LISTHEAD;
-    public String PLAYER_JOIN_MESSAGE;
-    public String PLAYER_QUIT_MESSAGE;
+    public List<String> PLAYER_JOIN_MESSAGE;
+    public List<String> PLAYER_QUIT_MESSAGE;
     public int TAB_TIMER_INTERVAL;
     public int MAX_NAME_LENGTH;
     public short CHAT_RECORD;
@@ -37,8 +37,8 @@ public class Settin {
         config = YamlConfiguration.loadConfiguration(new File(MoeInfo.plugin.getDataFolder(),"config.yml"));
         DEBUG = config.getBoolean("debug");
         LISTHEAD = ChatColor.translateAlternateColorCodes('&',config.getString("PlayerListHeader","")).replace("\\n","\n");
-        PLAYER_JOIN_MESSAGE = config.getString("PlayerJoinMessage","%player%&b突然出现");
-        PLAYER_QUIT_MESSAGE = config.getString("PlayerQuitMessage","%player%&3又消失啦");
+        PLAYER_JOIN_MESSAGE = config.getStringList("PlayerJoinMessages");
+        PLAYER_QUIT_MESSAGE = config.getStringList("PlayerQuitMessages");
         TAB_TIMER_INTERVAL = config.getInt("TAB_TIMER_INTERVAL",2500);
         MAX_NAME_LENGTH = config.getInt("MaxNameLength",20);
         CHAT_RECORD = (short) Math.min(100,config.getInt("ChatRecord",0));

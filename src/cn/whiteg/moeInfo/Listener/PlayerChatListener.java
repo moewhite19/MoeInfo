@@ -4,13 +4,9 @@ import cn.whiteg.mmocore.DataCon;
 import cn.whiteg.mmocore.MMOCore;
 import cn.whiteg.mmocore.util.CommonUtils;
 import cn.whiteg.moeInfo.MoeInfo;
-import cn.whiteg.moeInfo.utils.LocationUtil;
 import cn.whiteg.moeInfo.utils.PlayerDisplayNameManage;
-import com.bekvon.bukkit.residence.protection.ClaimedResidence;
-import com.sun.jna.platform.win32.WinDef;
-import io.papermc.paper.event.player.AsyncChatEvent;
-import io.papermc.paper.event.player.ChatEvent;
 import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -18,8 +14,6 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,10 +22,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class PlayerChatListener implements Listener {
-
-    public void onCha(AsyncChatEvent event) {
-    }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
         final String msg = event.getMessage();
@@ -86,7 +76,7 @@ public class PlayerChatListener implements Listener {
         cb.append(" ").reset();
 
         //消息内容
-        cb.append(msg).reset();
+        cb.append(msg).color(ChatColor.WHITE);
         cb.event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,msg));
         cb.event((HoverEvent) null);
 
@@ -99,9 +89,9 @@ public class PlayerChatListener implements Listener {
         final StringBuilder sb = new StringBuilder();
         for (BaseComponent baseComponent : finalMessage) sb.append(baseComponent.toLegacyText());
         final String messageString = sb.toString();
-        final ChatRecordListener recordListener = MoeInfo.plugin.getChatRecordListener();
         //向控制台发送消息
         MoeInfo.plugin.console.sendMessage(messageString);
+        final ChatRecordListener recordListener = MoeInfo.plugin.getChatRecordListener();
         //记录消息
         if (recordListener != null){
             recordListener.putMessage(Component.text(messageString));

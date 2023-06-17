@@ -1,4 +1,4 @@
-var: 2
+var: 3
 debug: false
 
 #玩家列表头文字
@@ -7,10 +7,18 @@ PlayerListHeader: '§8§m   -=§8§r§8{§l|§f§lWhiteG§b§l白鲸物语§8§l
 #在玩家F3调试界面插入文字
 F3info: '§3[§b§lWhite§7§lG§f白鲸物语§3]'
 
-#玩家加入提示
-PlayerJoinMessage: '§r%player%§b突然出现'
-#玩家退出提示
-PlayerQuitMessage: '§r%player%§3又消失啦'
+#玩家加入广播
+PlayerJoinMessages:
+  - '%player% 突然出现'
+  - '发现你啦 %player%'
+  - '与 %player% 建立连接'
+  - '%player% 开始同步'
+#玩家退出广播
+PlayerQuitMessages:
+  - '%player% 又消失啦'
+  - '%player% 不见了'
+  - '与 %player% 的连接已丢失'
+  - '与 %player% 失去同步'
 
 #Tab列表刷新间隔(单位:毫秒
 TAB_TIMER_INTERVAL: 2000
