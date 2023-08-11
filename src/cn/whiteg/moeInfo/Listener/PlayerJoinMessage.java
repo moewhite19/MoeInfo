@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -40,6 +41,13 @@ public class PlayerJoinMessage implements Listener {
         event.quitMessage(toComponent(msg,event.getPlayer(),NamedTextColor.DARK_AQUA));
     }
 
+    //todo 要加入自定义死亡消息?
+    /*@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onDeath(PlayerDeathEvent event) {
+
+    }*/
+
+
     static Component toComponent(String msg,Player player,TextColor color) {
         int inxStart = msg.indexOf("%player%");
         if (inxStart < 0){
@@ -51,12 +59,12 @@ public class PlayerJoinMessage implements Listener {
 
         if (inxStart > 0){
             component = Component.text(msg.substring(0,inxStart)).color(color);
-        }else component = EMPTY;
-        component = component .append(player.displayName().hoverEvent(player).color(NamedTextColor.WHITE));
+        } else component = EMPTY;
+        component = component.append(player.displayName().hoverEvent(player).color(NamedTextColor.WHITE));
 
         if (msg.length() > inxEnd){
             component = component.append(Component.text(msg.substring(inxEnd)).color(color)).append(EMPTY);
-        }else component = component.append(EMPTY);
+        } else component = component.append(EMPTY);
         return component;
     }
 }

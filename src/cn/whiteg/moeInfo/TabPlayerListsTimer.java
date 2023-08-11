@@ -7,6 +7,7 @@ import cn.whiteg.mmocore.util.CoolDownUtil;
 import cn.whiteg.moeEco.VaultHandler;
 import cn.whiteg.moeInfo.api.TabMessageProvider;
 import cn.whiteg.moeInfo.utils.CommonUtils;
+import cn.whiteg.moeInfo.utils.LocationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -55,23 +56,21 @@ public class TabPlayerListsTimer extends Thread {
             }
         });
 
-/*        regMeger(new TabMessageProvider(plugin) {
+        regMeger(new TabMessageProvider(plugin) {
             @Override
             public String getMsg(Player player,DataCon dataCon) {
                 World world = player.getWorld();
-                if (world.getEnvironment() == World.Environment.NORMAL){
-//                    return new StringBuilder("§b世界§f: ").append(CommonUtils.).toString();
-                }
-                return null;
+                return new StringBuilder("§b世界§f: ").append(LocationUtil.getWorldDisplayName(world)).toString();
             }
-        });*/
+        });
+
 
         regMeger(new TabMessageProvider(plugin) {
             @Override
             public String getMsg(Player player,DataCon dataCon) {
                 World world = player.getWorld();
                 if (world.getEnvironment() == World.Environment.NORMAL){
-                    return new StringBuilder("§b世界时间§f: ").append(CommonUtils.getWorldTime(world.getTime())).toString();
+                    return new StringBuilder("§b时间§f: ").append(CommonUtils.getWorldTime(world.getTime())).toString();
                 }
                 return null;
             }
