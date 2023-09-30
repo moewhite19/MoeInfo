@@ -15,7 +15,6 @@ public class SendBrand {
         //Validate.notNull(brand,"Server brand is null!");
         if (player == null) return;
         if (brand == null) return;
-        var np = EntityNetUtils.getNmsPlayer(player);
-        EntityNetUtils.getPlayerConnection(np).a(new ClientboundCustomPayloadPacket(new BrandPayload(new PacketDataSerializer(Unpooled.buffer()).a(brand))));
+        EntityNetUtils.sendPacket(player,new ClientboundCustomPayloadPacket(new BrandPayload(new PacketDataSerializer(Unpooled.buffer()).a(brand))));
     }
 }

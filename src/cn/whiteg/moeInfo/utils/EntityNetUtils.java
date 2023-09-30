@@ -3,6 +3,7 @@ package cn.whiteg.moeInfo.utils;
 import cn.whiteg.mmocore.reflection.ReflectUtil;
 import io.netty.channel.Channel;
 import net.minecraft.network.NetworkManager;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.server.level.WorldServer;
 import net.minecraft.server.network.PlayerConnection;
@@ -78,5 +79,9 @@ public class EntityNetUtils {
 
     public static EntityPlayer getNmsPlayer(Player player) {
         return (EntityPlayer) getNmsEntity(player);
+    }
+
+    public static void sendPacket(Player player,Packet<?> packet){
+        getPlayerConnection(getNmsPlayer(player)).b(packet);
     }
 }
