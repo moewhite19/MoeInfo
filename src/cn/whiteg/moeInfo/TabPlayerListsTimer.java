@@ -28,15 +28,27 @@ public class TabPlayerListsTimer extends Thread {
         setDaemon(true);
         isRun = true;
         super.start();
-        regMeger(new TabMessageProvider(plugin) {
-            @Override
-            public String getMsg(Player p,DataCon dc) {
-                if (plugin.economy != null){
-                    return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(((VaultHandler) plugin.economy).getFormatBalance(dc)).toString();
+        if (plugin.economy instanceof VaultHandler){
+            regMeger(new TabMessageProvider(plugin) {
+                @Override
+                public String getMsg(Player p,DataCon dc) {
+                    if (plugin.economy != null){
+                        return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append(((VaultHandler) plugin.economy).getFormatBalance(dc)).toString();
+                    }
+                    return null;
                 }
-                return null;
-            }
-        });
+            });
+        } else {
+            regMeger(new TabMessageProvider(plugin) {
+                @Override
+                public String getMsg(Player p,DataCon dc) {
+                    if (plugin.economy != null){
+                        return new StringBuilder().append("§b").append(plugin.economy.currencyNameSingular()).append(":§f").append((plugin.economy).getBalance(dc.getName())).toString();
+                    }
+                    return null;
+                }
+            });
+        }
 
         regMeger(new TabMessageProvider(plugin) {
             @Override

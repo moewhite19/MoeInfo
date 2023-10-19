@@ -52,7 +52,7 @@ public class MotdUtil {
 
     public static void setMotdName() {
         var str = MoeInfo.settin.getConfig().getString("MOTD.Motd","NONE");
-        str = str.replaceAll("%version%",MonitorUtil.SERVER_VER);
+        if (MoeInfo.plugin.memfree) str = str.replaceAll("%version%",MonitorUtil.SERVER_VER);
         setMotdName(str);
     }
 }
