@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -31,7 +30,7 @@ public class PlayerJoinMessage implements Listener {
         String msg = msgList.get(RANDOM.nextInt(msgList.size()));
         event.joinMessage(toComponent(msg,event.getPlayer(),NamedTextColor.AQUA));
         //发送F3调试信息
-        SendBrand.send(event.getPlayer(),MoeInfo.settin.f3info);
+        if (!MoeInfo.settin.f3info.isBlank()) SendBrand.send(event.getPlayer(),MoeInfo.settin.f3info);
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
