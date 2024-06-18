@@ -2,17 +2,14 @@ package cn.whiteg.moeInfo.utils;
 
 import cn.whiteg.mmocore.reflection.ReflectUtil;
 import io.netty.channel.Channel;
-import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.server.level.EntityPlayer;
-import net.minecraft.server.level.WorldServer;
-import net.minecraft.server.network.PlayerConnection;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 
 public class EntityNetUtils {
     static Field entity_counter;
@@ -22,32 +19,32 @@ public class EntityNetUtils {
 
     static {
         try{
-            entity_counter = ReflectUtil.getFieldFormType(EntityPlayer.class,PlayerConnection.class);
-            connect_network = ReflectUtil.getFieldFormType(PlayerConnection.class,NetworkManager.class);
-            network_channel = ReflectUtil.getFieldFormType(NetworkManager.class,Channel.class);
+            entity_counter = ReflectUtil.getFieldFormType(ServerPlayer.class,ServerGamePacketListenerImpl.class);
+            connect_network = ReflectUtil.getFieldFormType(ServerGamePacketListenerImpl.class,Connection.class);
+            network_channel = ReflectUtil.getFieldFormType(Connection.class,Channel.class);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public static PlayerConnection getPlayerConnection(EntityPlayer player) {
+    public static ServerGamePacketListenerImpl getServerGamePacketListenerImpl(ServerPlayer player) {
         try{
-            return (PlayerConnection) entity_counter.get(player);
+            return (ServerGamePacketListenerImpl) entity_counter.get(player);
         }catch (IllegalAccessException e){
             throw new RuntimeException(e);
         }
     }
 
-    public static NetworkManager getNetWork(PlayerConnection playerConnection) {
+    public static Connection getNetWork(ServerGamePacketListenerImpl playerConnection) {
         try{
-            return (NetworkManager) connect_network.get(playerConnection);
+            return (Connection) connect_network.get(playerConnection);
         }catch (IllegalAccessException e){
             throw new RuntimeException(e);
         }
     }
 
     //获取玩家网络通道
-    public static Channel getChannel(NetworkManager networkManager) {
+    public static Channel getChannel(Connection networkManager) {
         try{
             return (Channel) network_channel.get(networkManager);
         }catch (IllegalAccessException e){
@@ -55,33 +52,12 @@ public class EntityNetUtils {
         }
     }
 
-    //根据id获取实体
-    public static Entity getEntityById(World world,int id) {
-        try{
-            WorldServer nmsWorld = (WorldServer) world.getClass().getMethod("getHandle").invoke(world);
-            var entity = nmsWorld.a(id);
-            return entity == null ? null : entity.getBukkitEntity();
-        }catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e){
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
 
+    public static ServerPlayer getNmsPlayer(Player player) {
+        return ((CraftPlayer) player).getHandle();
     }
 
-    public static net.minecraft.world.entity.Entity getNmsEntity(Entity bukkitEntity) {
-        try{
-            //noinspection ResultOfMethodCallIgnored
-            return (net.minecraft.world.entity.Entity) bukkitEntity.getClass().getMethod("getHandle").invoke(bukkitEntity);
-        }catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static EntityPlayer getNmsPlayer(Player player) {
-        return (EntityPlayer) getNmsEntity(player);
-    }
-
-    public static void sendPacket(Player player,Packet<?> packet){
-        getPlayerConnection(getNmsPlayer(player)).b(packet);
+    public static void sendPacket(Player player,Packet<?> packet) {
+        getServerGamePacketListenerImpl(getNmsPlayer(player)).sendPacket(packet);
     }
 }

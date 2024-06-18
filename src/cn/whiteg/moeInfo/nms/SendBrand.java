@@ -1,8 +1,6 @@
 package cn.whiteg.moeInfo.nms;
 
 import cn.whiteg.moeInfo.utils.EntityNetUtils;
-import io.netty.buffer.Unpooled;
-import net.minecraft.network.PacketDataSerializer;
 import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.custom.BrandPayload;
 import org.bukkit.entity.Player;
@@ -15,6 +13,10 @@ public class SendBrand {
         //Validate.notNull(brand,"Server brand is null!");
         if (player == null) return;
         if (brand == null) return;
-        EntityNetUtils.sendPacket(player,new ClientboundCustomPayloadPacket(new BrandPayload(new PacketDataSerializer(Unpooled.buffer()).a(brand))));
+//        final FriendlyByteBuf friendlyByteBuf = new FriendlyByteBuf(Unpooled.buffer());
+//        final BrandPayload customPacketPayload = new BrandPayload(friendlyByteBuf.a(brand));
+        final BrandPayload customPacketPayload = new BrandPayload(brand);
+        final ClientboundCustomPayloadPacket packet = new ClientboundCustomPayloadPacket(customPacketPayload);
+        EntityNetUtils.sendPacket(player,packet);
     }
 }
